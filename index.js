@@ -92,6 +92,47 @@ server.put('/api/cohorts/:id', (req, res) => {
       });
   });
 
+  server.get('/api/cohorts/:id/students', (req, res) => {
+    db('cohorts')
+      .join('students', 'cohorts.id', 'students.cohorts_id')
+      .select()
+      .where({ id : req.params.id })
+      .then(students => {
+          res.status(200).json(students)
+      })
+      .catch(err => {
+          res.status(500).json(err)
+      })
+
+      
+  });
+
+  //Students calls
+
+  server.get('/api/students', (req, res) => {
+    db('students')
+      .then(students => {
+          res.status(200).json(students)
+      })
+      .catch(err => {
+          res.status(500).json(err)
+      })
+  });
+
+  server.post('/api/students', async (req, res) => {
+    try {
+        const [id] = await db('students').insert(req.body);
+    
+        const student = await db('students')
+          .where({ id })
+          .first();
+    
+        res.status(201).json(student);
+      } catch (error) {
+        res.status(500).json( error );
+      }
+  });  
+
 server.listen(5000, () => 
     console.log(`\n** API running on 5000 **\n`)
 )
