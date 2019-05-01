@@ -96,7 +96,7 @@ server.put('/api/cohorts/:id', (req, res) => {
     db('cohorts')
       .join('students', 'cohorts.id', 'students.cohorts_id')
       .select()
-      .where({ id : req.params.id })
+    //   .where({ id : req.params.id })
       .then(students => {
           res.status(200).json(students)
       })
