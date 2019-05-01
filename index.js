@@ -15,9 +15,9 @@ const db = knex(knexConfig)
 const server = express()
 
 server.use(helmet())
-server.use(express.json)
+server.use(express.json())
 
-server.get('api/cohorts', async (req, res) => {
+server.get('/', async (req, res) => {
     try {
         const cohorts = await db('cohorts')
         res.status(200).json(cohorts)
